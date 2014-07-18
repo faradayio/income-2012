@@ -23,33 +23,63 @@
   background:rgba(0,0,0,0);
   color:#fff;
   position:absolute;
-  top:0;right:0;bottom:0;
+  top:0;right:0;
   z-index:100;
   width:20%;
   padding:10px;
   }
-  .ui-control label {
-    text-transform:uppercase;
-    display:block;
-    font-weight:bold;
-    color:rgba(255,255,255,0.8);
-    margin-bottom:5px;
-    }
-  .ui-control strong {
-    font-size:52px;
-    line-height:38px;
-    }
+.ui-control label {
+  text-transform:uppercase;
+  display:block;
+  font-weight:bold;
+  color:rgba(255,255,255,0.8);
+  margin-bottom:5px;
+  }
+.ui-control strong {
+  font-size:52px;
+  line-height:38px;
+  }
+.legend-control {
+  font:bold 12px/20px 'Source Code Pro';
+  background:rgba(0,0,0,0);
+  color:#fff;
+  position:absolute;
+  top:80px;left:0;
+  z-index:100;
+  width:10%;
+  padding:10px;
+  }
+.legend-control .label {
+  text-transform:uppercase;
+  display:block;
+  font-weight:bold;
+  color:rgba(255,255,255,0.8);
+  margin-bottom:5px;
+  font-size:16px;
+  line-height:12px;
+  }
 </style>
 <div id='map' class='dark'></div>
 <div id='count' class='ui-control'></div>
+<div class='legend-control'>
+  <div class="label">>$120k/yr</div>
+  <img src="income_legend_vert.png"/>
+  <div class="label"><$25k/yr</div>
+</div>
 
 <script>
-var count = document.getElementById('count');
-var map = L.mapbox.map('map', 'faraday2.shnf80k9', {
-    attributionControl: false,
-    infoControl: true,
-    gridControl: false // Disable default gridControl interactivity.
-}).setView([16.86763, -0.81152], 5);
+var southWest = L.latLng(1.4778564, -29.49902),
+    northEast = L.latLng(29.627818, 29.7509765),
+    outbounds = L.latLngBounds(southWest, northEast),
+    count = document.getElementById('count'),
+    map = L.mapbox.map('map', 'faraday2.shnf80k9', {
+      attributionControl: true,
+      infoControl: true,
+      gridControl: false,
+      maxBounds: outbounds,
+      maxZoom: 12,
+      minZoom: 5
+    }).setView([16.86763, -0.81152], 5);
 
 var hash = L.hash(map);
 
@@ -63,6 +93,7 @@ map.gridLayer
     }).on('mouseout', function(o) {
         count.innerHTML = '';
     });
+map.attributionControl.addAttribution('Population & reference data provided by the <a href="http://census.gov/">US Census Bureau</a> (2012)');
 </script>
 
 </body>
